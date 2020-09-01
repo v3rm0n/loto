@@ -1,98 +1,68 @@
 <!DOCTYPE html>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#000000" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta name="theme-color" content="#000000"/>
 <link rel="apple-touch-icon" sizes="128x128" href="favicon.ico">
-<link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet"> 
+<link rel='shortcut icon' type='image/x-icon' href='favicon.ico'/>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <link rel="manifest" href="/manifest.webmanifest">
 <title>Eesti Loto Pilet</title>
 <style>
-	html {
-		font-family: 'Open Sans', sans-serif;
-		display: flex;
-	}
+    html {
+        font-family: 'Open Sans', sans-serif;
+        display: flex;
+    }
 
-	body {
-		margin: 0;
-		padding: 0;
-	}
+    body {
+        margin: 0;
+        padding: 0;
+    }
 
-	table {
-		font-size: 4vh;
-	}
+    table {
+        font-size: 4vh;
+        display: block;
+        padding-bottom: 1vh;
+    }
 
-	.container {
-		width: 100vw;
-		height: 100vh;
-		user-select: none;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
+    .container {
+        width: 100vw;
+        height: 100vh;
+        user-select: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 
-	.field {
-		display: block;
-		padding-bottom: 1vh;
-	}
-
-	td {
-		cursor: pointer;
-		padding: 5px;
-	}
+    td {
+        cursor: pointer;
+        padding: 5px;
+    }
 </style>
-<div class ="container">
-<table class="field">
-	<tr>
-		<th>B</th>
-		<th>I</th>
-		<th>N</th>
-		<th>G</th>
-		<th>O</th>
-	</tr>
-</table>
-<table class="field">
-	<tr>
-		<th>B</th>
-		<th>I</th>
-		<th>N</th>
-		<th>G</th>
-		<th>O</th>
-	</tr>
-</table>
-<script>
-	const table1 = document.querySelectorAll("table")[0];
-	const table2 = document.querySelectorAll("table")[1];
-	const field1 = [6,17,35,54,71,13,30,40,60,74,5,19,36,59,67,10,29,42,52,69,1,23,43,49,62];
-	const field2 = [7,21,35,56,74,6,25,43,60,66,8,28,40,46,70,10,29,45,57,73,5,20,36,55,62];
-	let i,tr;
-	for (i=0;i<field1.length;i++) {
-		if(i%5 === 0) {
-			tr = document.createElement("tr");
-			table1.appendChild(tr);
-		}
-		const td = document.createElement("td");
-		td.innerText = field1[i];
-		tr.appendChild(td);
-	}
-	for (i=0;i<field2.length;i++) {
-		if(i%5 === 0) {
-			tr = document.createElement("tr");
-			table2.appendChild(tr);
-		}
-		const td = document.createElement("td");
-		td.innerText = field2[i];
-		tr.appendChild(td);
-	}
-	document.querySelectorAll("td").forEach((n) => {
-		n.onclick = () => {
-			const current = n.style.backgroundColor;
-			if(current === 'red') {
-				n.style.backgroundColor = "white";
-			} else {
-				n.style.backgroundColor = "red";
-			}
-		}
-	});
-</script>
+<div class="container">
+    <table>
+        <thead>
+        <tr>
+            <th>B</th>
+            <th>I</th>
+            <th>N</th>
+            <th>G</th>
+            <th>O</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <table>
+        <thead>
+        <tr>
+            <th>B</th>
+            <th>I</th>
+            <th>N</th>
+            <th>G</th>
+            <th>O</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 </div>
+<script src="main.js"></script>
