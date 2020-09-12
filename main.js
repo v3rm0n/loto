@@ -1,7 +1,7 @@
 const initialState = {
     tables: [
-        Object.fromEntries([6, 17, 35, 54, 71, 13, 30, 40, 60, 74, 5, 19, 36, 59, 67, 10, 29, 42, 52, 69, 1, 23, 43, 49, 62].map((i) => [i, false])),
-        Object.fromEntries([7, 21, 35, 56, 74, 6, 25, 43, 60, 66, 8, 28, 40, 46, 70, 10, 29, 45, 57, 73, 5, 20, 36, 55, 62].map((i) => [i, false]))
+        Object.fromEntries([6, 17, 35, 54, 71, 13, 30, 40, 60, 74, 5, 19, 36, 59, 67, 10, 29, 42, 52, 69, 1, 23, 43, 49, 62].map((i) => [`c${i}`, false])),
+        Object.fromEntries([7, 21, 35, 56, 74, 6, 25, 43, 60, 66, 8, 28, 40, 46, 70, 10, 29, 45, 57, 73, 5, 20, 36, 55, 62].map((i) => [`c${i}`, false]))
     ]
 };
 
@@ -17,14 +17,15 @@ const drawTable = (state) => {
                 body.appendChild(tr);
             }
             const td = document.createElement("td");
-            td.innerText = key.toString();
+            const nr = key.toString().substring(1);
+            td.innerText = nr;
             if (checked) {
                 td.style.backgroundColor = "red";
             } else {
                 td.style.backgroundColor = "white";
             }
             td.onclick = () => {
-                action('CHECK', {table: tableNr, number: key.toString()});
+                action('CHECK', {table: tableNr, number: nr});
             }
             tr.appendChild(td);
             i++;
@@ -44,7 +45,7 @@ const reducer = (action, state) => {
         case 'CHECK':
             const tables = [...state.tables];
             const table = tables[action.data.table];
-            table[action.data.number] = !table[action.data.number];
+            table[`c${action.data.number}`] = !table[`c${action.data.number}`];
             return {...state, tables};
     }
     return {...state};
