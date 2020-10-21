@@ -1,10 +1,3 @@
-const initialState = {
-    tables: [
-        Object.fromEntries([6, 17, 35, 54, 71, 13, 30, 40, 60, 74, 5, 19, 36, 59, 67, 10, 29, 42, 52, 69, 1, 23, 43, 49, 62].map((i) => [`c${i}`, false])),
-        Object.fromEntries([7, 21, 35, 56, 74, 6, 25, 43, 60, 66, 8, 28, 40, 46, 70, 10, 29, 45, 57, 73, 5, 20, 36, 55, 62].map((i) => [`c${i}`, false]))
-    ]
-};
-
 const drawTable = (state) => {
     return (table, tableNr) => {
         const body = table.querySelector("tbody");
