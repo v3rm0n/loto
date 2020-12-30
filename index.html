@@ -78,6 +78,15 @@
 </template>
 <template id="form">
     <script>
+        const resetPinchZoom = () => {
+            if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i)) {
+                const viewportmeta = document.querySelector('meta[name="viewport"]');
+                if (viewportmeta) {
+                    viewportmeta.setAttribute('content', 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0');
+                    viewportmeta.setAttribute('content', 'width=device-width, minimum-scale=1.0, initial-scale=1.0');
+                }
+            }
+        };
         const ready = (btn) => {
             const form = btn.parentElement;
             const formData = new FormData(form);
@@ -92,6 +101,7 @@
 
             });
             localStorage.setItem("state", JSON.stringify({form: false, tables}));
+            resetPinchZoom();
             action('INIT');
         }
         const add = (btn) => {
@@ -129,7 +139,7 @@
     const touchstart = (e) => {
         e.preventDefault();
         if (!timer) {
-            timer = setTimeout(clear, 2000);
+            timer = setTimeout(clear, 5000);
         }
     }
 
