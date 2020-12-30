@@ -1,4 +1,4 @@
-const initialState = {tables: [], form: true};
+const initialState = {tables: [], form: true, scope: null};
 
 const drawTable = (table, tableNr, tableDom) => {
     const body = tableDom.querySelector("tbody");
@@ -41,17 +41,18 @@ const render = (state) => {
 
 const reducer = (action, state) => {
     console.log(action);
-    switch (action.name) {
+    const {data, name} = action;
+    switch (name) {
         case 'CLEAR':
-            localStorage.removeItem("state");
+            localStorage.removeItem(`state_${data.scope}`);
             return initialState;
         case 'INIT':
-            const storedState = JSON.parse(localStorage.getItem("state")) || initialState;
-            return {...storedState};
+            const storedState = JSON.parse(localStorage.getItem(`state_${data.scope}`)) || initialState;
+            return {...storedState, scope: data.scope};
         case 'CHECK':
             const tables = [...state.tables];
-            const table = tables[action.data.table];
-            table[`c${action.data.number}`] = !table[`c${action.data.number}`];
+            const table = tables[data.table];
+            table[`c${data.number}`] = !table[`c${data.number}`];
             return {...state, tables};
     }
     return {...state};
@@ -61,7 +62,9 @@ const action = (() => {
     let state = initialState;
     return (name, data) => {
         state = reducer({name, data}, state);
-        localStorage.setItem("state", JSON.stringify(state));
+        if (state.scope) {
+            localStorage.setItem(`state_${state.scope}`, JSON.stringify(state));
+        }
         render(state);
     };
 })();
