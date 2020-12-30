@@ -100,8 +100,7 @@
                 return Object.fromEntries(remap.map((i) => [`c${i}`, false]));
 
             });
-            const params = new URLSearchParams(window.location.search);
-            const scope = params.get('scope') || Math.random().toString(36).substr(2, 9);
+            const scope = Math.random().toString(36).substr(2, 9);
             localStorage.setItem(`state_${scope}`, JSON.stringify({form: false, tables, scope}));
             resetPinchZoom();
             window.location.href = `${window.location.pathname}?scope=${scope}`
