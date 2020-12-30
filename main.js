@@ -3,8 +3,8 @@ const initialState = {tables: [], form: true};
 const drawTable = (table, tableNr, tableDom) => {
     const body = tableDom.querySelector("tbody");
     body.querySelectorAll('*').forEach(n => n.remove());
-    let tr, i = 0;
-    Object.entries(table).forEach(([key, checked]) => {
+    let tr;
+    Object.entries(table).forEach(([key, checked], i) => {
         if (i % 5 === 0) {
             tr = document.createElement("tr");
             body.appendChild(tr);
@@ -21,7 +21,6 @@ const drawTable = (table, tableNr, tableDom) => {
             action('CHECK', {table: tableNr, number: nr});
         }
         tr.appendChild(td);
-        i++;
     });
     document.getElementById("content").appendChild(tableDom);
 };

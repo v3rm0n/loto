@@ -83,7 +83,12 @@
             const formData = new FormData(form);
             const tables = formData.getAll('field').map((field) => {
                 const data = field.trim().split(/[\s,\n]+/).filter((w) => !isNaN(w));
-                return Object.fromEntries(data.map((i) => [`c${i}`, false]));
+                const remap = [];
+                data.forEach((item, index) => {
+                    const mod = index % 5;
+                    remap[mod * 5 + ((index - mod) / 5)] = item;
+                });
+                return Object.fromEntries(remap.map((i) => [`c${i}`, false]));
 
             });
             localStorage.setItem("state", JSON.stringify({form: false, tables}));
