@@ -1,40 +1,54 @@
-const drawTable = (state) => {
-    return (table, tableNr) => {
-        const body = table.querySelector("tbody");
-        body.querySelectorAll('*').forEach(n => n.remove());
-        const content = state.tables[tableNr];
-        let tr, i = 0;
-        Object.entries(content).forEach(([key, checked]) => {
-            if (i % 5 === 0) {
-                tr = document.createElement("tr");
-                body.appendChild(tr);
-            }
-            const td = document.createElement("td");
-            const nr = key.toString().substring(1);
-            td.innerText = nr;
-            if (checked) {
-                td.style.backgroundColor = "red";
-            } else {
-                td.style.backgroundColor = "white";
-            }
-            td.onclick = () => {
-                action('CHECK', {table: tableNr, number: nr});
-            }
-            tr.appendChild(td);
-            i++;
-        });
-    };
+const initialState = {tables: [], form: true};
+
+const drawTable = (table, tableNr, tableDom) => {
+    const body = tableDom.querySelector("tbody");
+    body.querySelectorAll('*').forEach(n => n.remove());
+    let tr, i = 0;
+    Object.entries(table).forEach(([key, checked]) => {
+        if (i % 5 === 0) {
+            tr = document.createElement("tr");
+            body.appendChild(tr);
+        }
+        const td = document.createElement("td");
+        const nr = key.toString().substring(1);
+        td.innerText = nr;
+        if (checked) {
+            td.style.backgroundColor = "red";
+        } else {
+            td.style.backgroundColor = "white";
+        }
+        td.onclick = () => {
+            action('CHECK', {table: tableNr, number: nr});
+        }
+        tr.appendChild(td);
+        i++;
+    });
+    document.getElementById("content").appendChild(tableDom);
 };
 
-const draw = (state) => {
-    const tables = document.querySelectorAll("table");
-    tables.forEach(drawTable(state));
+const render = (state) => {
+    document.getElementById("content").innerHTML = '';
+    const {content} = document.getElementById("bingo");
+    state.tables.forEach((table, index) => {
+        const tableDom = content.cloneNode(true);
+        drawTable(table, index, tableDom);
+    });
+    if (state.form) {
+        const {content} = document.getElementById("form");
+        const formContent = content.cloneNode(true);
+        document.getElementById("content").appendChild(formContent);
+    }
 };
 
 const reducer = (action, state) => {
+    console.log(action);
     switch (action.name) {
+        case 'CLEAR':
+            localStorage.removeItem("state");
+            return initialState;
         case 'INIT':
-            return {...state};
+            const storedState = JSON.parse(localStorage.getItem("state")) || initialState;
+            return {...storedState};
         case 'CHECK':
             const tables = [...state.tables];
             const table = tables[action.data.table];
@@ -45,12 +59,10 @@ const reducer = (action, state) => {
 };
 
 const action = (() => {
-    let state = JSON.parse(localStorage.getItem("state")) || initialState;
+    let state = initialState;
     return (name, data) => {
         state = reducer({name, data}, state);
         localStorage.setItem("state", JSON.stringify(state));
-        draw(state);
+        render(state);
     };
 })();
-
-action('INIT');

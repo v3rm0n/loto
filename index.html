@@ -38,8 +38,13 @@
         cursor: pointer;
         padding: 5px;
     }
+
+    textarea {
+        display: block;
+        margin-bottom: 10px;
+    }
 </style>
-<div class="container">
+<template id="bingo">
     <table>
         <thead>
         <tr>
@@ -52,25 +57,62 @@
         </thead>
         <tbody></tbody>
     </table>
-    <table>
-        <thead>
-        <tr>
-            <th>B</th>
-            <th>I</th>
-            <th>N</th>
-            <th>G</th>
-            <th>O</th>
-        </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+</template>
+<template id="form">
+    <script>
+        const ready = (btn) => {
+            const form = btn.parentElement;
+            const formData = new FormData(form);
+            const tables = formData.getAll('field').map((field) => {
+                const data = field.trim().split(/[\s,\n]+/).filter((w) => !isNaN(w));
+                return Object.fromEntries(data.split(",").map((i) => [`c${i}`, false]));
+
+            });
+            localStorage.setItem("state", JSON.stringify({form: false, tables}));
+            action('INIT');
+        }
+        const add = (btn) => {
+            const form = btn.parentElement;
+            const field = document.createElement("textarea");
+            field.setAttribute("name", "field");
+            form.insertBefore(field, btn);
+        };
+    </script>
+    <h1>Bingo Loto</h1>
+    <p>Kopeeri Eesti Loto lehelt Bingo Loto väljad (koos B,I,N,G,O päisega) kastidesse ning vajuta Valmis.</p>
+    <form>
+        <textarea name="field"></textarea>
+        <button type="button" onclick="add(this)">Lisa väli</button>
+        <button type="button" onclick="ready(this)">Valmis</button>
+    </form>
+</template>
+<div class="container" id="content">
 </div>
-<script>
-    const initialState = {
-        tables: [
-            Object.fromEntries([6, 17, 35, 54, 71, 13, 30, 40, 60, 74, 5, 19, 36, 59, 67, 10, 29, 42, 52, 69, 1, 23, 43, 49, 62].map((i) => [`c${i}`, false])),
-            Object.fromEntries([7, 21, 35, 56, 74, 6, 25, 43, 60, 66, 8, 28, 40, 46, 70, 10, 29, 45, 57, 73, 5, 20, 36, 55, 62].map((i) => [`c${i}`, false]))
-        ]
-    };
-</script>
 <script src="main.js"></script>
+<script>
+    let timer;
+    const clear = () => {
+        timer = null;
+        action('CLEAR');
+    };
+
+    const touchstart = (e) => {
+        e.preventDefault();
+        if (!timer) {
+            timer = setTimeout(clear, 800);
+        }
+    }
+
+    const touchend = () => {
+        if (timer) {
+            clearTimeout(timer);
+            timer = null;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        window.addEventListener("touchstart", touchstart, false);
+        window.addEventListener("touchend", touchend, false);
+    });
+    action('INIT');
+</script>
