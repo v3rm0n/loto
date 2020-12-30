@@ -43,6 +43,24 @@
         display: block;
         margin-bottom: 10px;
     }
+
+    img.example {
+        width: 50vw;
+    }
+
+    figure {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    figcaption {
+        font-size: xx-small;
+    }
 </style>
 <template id="bingo">
     <table>
@@ -79,7 +97,14 @@
         };
     </script>
     <h1>Bingo Loto</h1>
-    <p>Kopeeri Eesti Loto lehelt Bingo Loto väljad (koos B,I,N,G,O päisega) kastidesse ning vajuta Valmis.</p>
+    <p>Kopeeri Eesti Loto lehelt oma Bingo pileti väli (koos B,I,N,G,O päisega) alla kasti ning vajuta "Valmis".</p>
+    <figure>
+        <img class="example" src="img/field.png">
+        <figcaption>Kopeeri terve väli alustades ülevalt vasakult B tähest ning lõpetades all paremal numbriga 62.
+            Telefonil saad seda teha kahe näpuga.
+        </figcaption>
+    </figure>
+    <p>Kui tahad mitu välja siis vajuta "Lisa väli" ja tee sama ka teise väljaga.</p>
     <form>
         <textarea name="field"></textarea>
         <button type="button" onclick="add(this)">Lisa väli</button>
