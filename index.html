@@ -100,10 +100,9 @@
                 return Object.fromEntries(remap.map((i) => [`c${i}`, false]));
 
             });
-            const scope = Math.random().toString(36).substr(2, 9);
-            localStorage.setItem(`state_${scope}`, JSON.stringify({form: false, tables, scope}));
+            localStorage.setItem("state", JSON.stringify({form: false, tables}));
             resetPinchZoom();
-            window.location.href = `${window.location.pathname}?scope=${scope}`
+            action('INIT');
         }
         const add = (btn) => {
             const form = btn.parentElement;
@@ -131,11 +130,10 @@
 </div>
 <script src="main.js"></script>
 <script>
-    const params = new URLSearchParams(window.location.search);
     let timer;
     const clear = () => {
         timer = null;
-        action('CLEAR', {scope: params.get('scope')});
+        action('CLEAR');
     };
 
     const touchstart = (e) => {
@@ -156,6 +154,5 @@
         window.addEventListener("touchstart", touchstart, false);
         window.addEventListener("touchend", touchend, false);
     });
-
-    action('INIT', {scope: params.get('scope')});
+    action('INIT');
 </script>
