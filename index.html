@@ -133,7 +133,9 @@
     let timer;
     const clear = () => {
         timer = null;
-        action('CLEAR');
+        if (confirm('Kas tahad teha uue pileti?')) {
+            action('CLEAR');
+        }
     };
 
     const touchstart = (e) => {
